@@ -1,0 +1,5 @@
+#!/bin/bash
+fle_name=\*\\'"Best School"\'\\*$\?\*\*\*\*\*:)
+echo "best School' > "$file_name"
+echo >> "$file_name"
+echo "File '$file_name'
