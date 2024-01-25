@@ -12,4 +12,4 @@ while [ $hour -le 12 ]; do
         minutes=$((minutes+1))
     done
     hour=$((hour+1))
-done
+done | head -n 70
