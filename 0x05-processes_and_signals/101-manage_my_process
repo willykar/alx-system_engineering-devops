@@ -1,31 +1,46 @@
 #!/usr/bin/env bash
 # A script that manages manages manage_my_process
 
-start() {
+if [ "${1}" == "start" ]
+
+then
+
     ./manage_my_process &
-    echo $! >/var/run/my_process.pid
-    if [ "$1" -eq 1 ]; then
-        echo "manage_my_process started"
-    fi
-}
 
-stop() {
-    pkill -f 'manage_my_process'
-    rm -f /var/run/my_process.pid
-    if [ "$1" -eq 1 ]; then
-        echo "manage_my_process stopped"
-    fi
-}
+    touch /var/run/my_process.pid
 
-restart() {
-    stop 0
-    start 0
+    echo "$!" > /var/run/my_process.pid
+
+    echo "manage_my_process started"
+
+elif [ "${1}" == "stop" ]
+
+then
+
+    echo "manage_my_process stopped"
+
+    kill "$(cat /var/run/my_process.pid)"
+
+    rm /var/run/my_process.pid
+
+elif [ "${1}" == "restart" ]
+
+then
+
+    kill "$(cat /var/run/my_process.pid)"
+
+    rm /var/run/my_process.pid
+
+    ./manage_my_process &
+
+    touch /var/run/my_process.pid
+
+    echo "$!" > /var/run/my_process.pid
+
     echo "manage_my_process restarted"
-}
 
-case "$1" in
-start) start 1 ;;
-stop) stop 1 ;;
-restart) restart ;;
-*) echo "Usage: $0 {start|stop|restart}" ;;
-esac
+else
+
+    echo "Usage: manage_my_process {start|stop|restart}"
+
+fi
