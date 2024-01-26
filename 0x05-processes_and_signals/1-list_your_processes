@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-echo ps -u
+# A bash script that displays a list of currently running processes
+ps aux --forest
