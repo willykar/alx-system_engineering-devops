@@ -1,0 +1,48 @@
+Type www.foobar.com into your browser
+
+What happens when the user presses enter:
+1. DNS Resolution:
+DNS resolution is the process of converting a human-readable domain name 
+which in our case is www.foobar.com into a numerical IP address.
+The user's browsers asks the DNS for the IP address associated with www.foobar.com. 
+It can either be stored in the DNS cache in the browser or the DNS cache in the OS.
+If the record is not found in both, the resolver is used for DNS lookup.
+
+2. Web server
+The user's browser sends an HTTP request to the server at 8.8.8.8
+3. Nginx (web server):
+A web server is responsible for serving web content to clients.
+A web server listens for incoming HTTP requests. When the user requests for a specific resource, 
+the web server locates the requested content on its filesystem and sends it back to the client in an HTTP response.
+
+4. Application Server:
+If the request needs processing, Nginx might pass it to the application server.
+The application server processes the dynamic content request and executes the application code.
+It interacts with the database server to retrieve or store data as needed and generates dynamic content.
+It then sends the generated content back to Nginx which forwards it to the browser.
+
+5. Database:
+The database(MySQL) stores website data like user accounts.
+It receives queries from the application server, processes them, and returns the results.
+6. 
+Communication with User's Computer:
+The server communicates with the user's computer over the internet using the HTTP protocol.
+HTTP requests and responses are sent back and forth between the server and the user's
+browser to deliver the website content.
+
+Issues with this Infrastructure:
+1. Single Point of Failure (SPOF):
+Since all components (web server, application server, and database) are hosted on a single server,
+any hardware or software failure can result in a complete outage of the website.
+
+2. Downtime during Maintenance:
+Deploying new code or performing maintenance tasks may require restarting the web server,
+causing downtime for the website.
+
+3. Scalability Limitations:
+As incoming traffic increases, a single server may not be able to handle the load efficiently. 
+Scaling resources like CPU, memory, and bandwidth becomes challenging, 
+leading to performance degradation or service disruptions.
+To address these issues, we could introduce redundancy, load balancing, and vertical or horizontal 
+scaling to the infrastructure. Additionally, separating components onto different servers or using 
+cloud-based services can improve fault tolerance and scalability.
