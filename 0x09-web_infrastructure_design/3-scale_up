@@ -1,0 +1,36 @@
+The infrastructure consists of five servers:
+
+1. Load Balancer 1 (HAproxy): This server is responsible distributing incoming traffic web servers. 
+It a round-robin distribution algorithm, whichly distributes incoming traffic to each web server.
+This ensures that no single web server is overwhelmed with traffic,
+and also provides fault tolerance in case one of the web servers goes down.
+
+2. Load Balancer 2 (HAproxy): This server is a secondary load balancer that is configured as a cluster with Load Balancer 1.This 
+provides additional fault tolerance in case Load Balancer 1 goes down.
+
+3. Web Server 1 (Nginx): This server is responsible for handling incoming HTTP requests from the user's browser.
+It serves static files like HTML, CSS, and JavaScript.
+
+4. Web Server 2 (Nginx): This server is identical to Web Server 1 and provides additional capacity for handling
+incoming traffic.
+
+5. Application Server: This server is responsible for processing requests that require server-side processing.
+It communicates with the database to retrieve or store data.
+
+6. Database Primary Node (MySQL): This server is responsible for handling all write requests.
+
+7. Database Replica Node (MySQL): This server is responsible for handling all read requests and periodically
+synchronizes its data with the primary node to ensure data consistency.
+
+Two additional servers are added to the infrastructure to provide additional capacity and fault
+tolerance for the load balancer.
+
+The components (web server, application server, and database) are
+separated onto their own servers to reduce redundancy and optimize resource utilization.
+
+Issues With This Infrastructure
+1. High maintenance costs.
+Moving each of the major components to its own server, means that more
+servers would have to be bought and the company's electricity bill would rise along with the introduction of new servers.
+Some of the company's funds would have to be used to buy the servers and pay for
+the electricity consumption needed to keep the servers (including the new and old ones) running.
