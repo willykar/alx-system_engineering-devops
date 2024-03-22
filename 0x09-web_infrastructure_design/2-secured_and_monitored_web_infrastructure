@@ -1,0 +1,43 @@
+Infrastructure instructions:
+
+Load Balancer (HAproxy):
+Function: Distributes incoming traffic to web servers using a round-robin distribution algorithm.
+Configuration: SSL certificate installed to enable HTTPS encryption for traffic between user's browser and load balancer.
+Issue: SSL termination at the load balancer level may lead to performance bottlenecks and reduced infrastructure capacity.
+Mitigation: Consider terminating SSL at the web server level to alleviate potential performance issues.
+
+Web Server 1 (Nginx):
+Function: Handles incoming HTTP requests, serving static files (HTML, CSS, JavaScript).
+Configuration: Identical to Web Server 2 (Nginx), ensuring redundancy and fault tolerance.
+Potential Issue: Redundancy in having identical servers may lead to increased costs and resource inefficiencies.
+Mitigation: Optimize resource utilization by segregating components onto different servers where applicable.
+
+Application Server:
+Function: Processes requests requiring server-side processing and interacts with the database.
+Application Files: Contains code executed by the application server to fulfill requests.
+Issue: Lack of redundancy in MySQL setup; a single primary server for write requests poses a single point of failure.
+Mitigation: Implement a Primary-Primary (Master-Master) cluster
+architecture to allow both nodes to accept write requests, ensuring high availability and fault tolerance.
+
+Database (MySQL):
+Architecture: Primary-Replica (Master-Slave) cluster.
+Function: Stores and retrieves data, ensuring data consistency and availability.
+Issue: Dependency on a single primary node for write requests poses a risk of downtime in case of failure.
+Mitigation: Transition to a Primary-Primary (Master-Master) cluster setup to distribute write requests 
+across multiple nodes, enhancing fault tolerance.
+
+Additional Enhancements:
+Security:
+Implementation of three firewalls to restrict access to servers and protect against potential attacks.
+Configuration to allow only necessary traffic, enhancing security posture
+
+Monitoring:
+Introduction of three monitoring clients to collect data on server performance metrics.
+Configuration to track CPU usage, memory usage, network traffic, and disk usage for analysis.
+Usage of a monitoring service like Sumo Logic for data analysis and reporting.
+Implementation of monitoring thresholds for web server QPS to alert administrators
+in case of exceeding predefined limits.
+
+Terminating SSL at the load balancer level is an issue because it can create a bottleneck for SSL handshakes. 
+This can cause performance issues and reduce the capacity of the infrastructure. 
+To mitigate this, you can terminate SSL at the web server level instead.

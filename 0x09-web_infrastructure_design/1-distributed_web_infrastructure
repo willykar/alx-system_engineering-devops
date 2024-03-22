@@ -1,0 +1,44 @@
+Infrastructure Overview:
+
+Load Balancer (HAproxy):
+Function: Distributes incoming traffic to web servers using a round-robin distribution algorithm.
+Configuration: Active-Active setup for fault tolerance.
+Potential Issue: Single Point of Failure (SPOF) if the load balancer goes down.
+Mitigation: Introduce redundancy with multiple load balancers.
+
+Web Server 1 (Nginx):
+Function: Handles incoming HTTP requests, serving static files (HTML, CSS, JavaScript).
+Identical Configuration: Web Server 2 (Nginx) mirrors this setup.
+Potential Issue: Increased load or failure on one server can impact performance.
+Mitigation: Scaling infrastructure horizontally with additional web servers.
+
+Application Server:
+Function: Processes requests requiring server-side processing and interacts with the database.
+Application Files: Contains code executed by the application server to fulfill requests.
+Potential Issue: Increased load or failure can affect application performance.
+Mitigation: Scaling horizontally by adding more application servers.
+
+Database (MySQL):
+Architecture: Primary-Replica (Master-Slave) cluster.
+Function: Stores and retrieves data, ensuring data consistency and availability.
+Primary Node: Handles all write requests.
+Replica Node: Handles read requests, periodically synchronizing data with the primary node.
+Potential Issue: Single Point of Failure (SPOF) if primary node goes down.
+Mitigation: Automatic failover mechanism to promote replica node in case of primary node failure.
+
+Additional Concerns with the infrastructure:
+
+Security:
+Lack of Firewall: Leaves infrastructure vulnerable to attacks.
+Absence of HTTPS: Traffic encryption is not implemented, risking data integrity and privacy.
+Mitigation: Implement firewall rules to restrict access and deploy HTTPS to encrypt traffic.
+Monitoring:
+
+No monitoring tools in place to detect and address performance issues or failures.
+Potential Issue: Lack of awareness regarding system health and performance.
+Mitigation: Introduce monitoring solutions to track system metrics, detect anomalies,
+and alert administrators for timely intervention.
+
+Single Point of Failure (SPOF): While the use of a load balancer and multiple web servers 
+reduces the risk of SPOF, there is still a risk of SPOF if the load balancer goes down.
+To mitigate this, you can use redundancy by having multiple load balancers.
