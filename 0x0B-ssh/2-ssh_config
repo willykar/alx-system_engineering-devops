@@ -1,0 +1,5 @@
+# configure ssh server so that you can connect without typing a password
+Host *
+	IdentityFile ~/.ssh/school
+	PasswordAuthentication no
+	HostbasedAuthentication no
