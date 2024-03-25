@@ -1,25 +1,8 @@
 #!/usr/bin/env bash
 # install nginx
 
-# Update package index and install nginx
-apt-get update
-apt-get install -y nginx
-
-# Configure nginx to listen on port 80
-sed -i 's/listen\s*80;/listen 80;/g' /etc/nginx/sites-available/default
-
-# Restart nginx without using systemctl
-killall -s HUP nginx
-
-# Create temporary HTML file with "Hello World!"
-echo "Hello World!" > /var/www/html/index.html
-
-# Test nginx response with curl
-response=$(curl -s http://localhost)
-
-# Check if response contains "Hello World!"
-if [[ "$response" == *"Hello World!"* ]]; then
-    echo "Hello World"
-else
-    echo "Nginx configuration failed."
-fi
+apt-get -y update
+apt-get -y install nginx
+ufw allow 'Nginx HTTP'
+echo 'Hello World!' > /var/www/html/index.nginx-debian.html
+service nginx start
