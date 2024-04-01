@@ -10,7 +10,7 @@ apt-get install -y haproxy=2.0.\*
 echo "ENABLED=1" >> /etc/default/haproxy
 
 echo '
-frontend lb-01-frontend
+frontend http
 	bind *:80
 	default_backend web-backend
 
