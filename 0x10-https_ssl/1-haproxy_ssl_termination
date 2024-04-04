@@ -34,17 +34,17 @@ defaults
         errorfile 504 /etc/haproxy/errors/504.http
 
 frontend www-ssl
-        bind *:443 ssl crt /etc/haproxy/certs/njengamwangi.tech.pem
+        bind *:443 ssl crt /etc/haproxy/certs/www.njengamwangi.tech.pem
         mode http
         http-request set-header X-Forwarded-Proto https
         default_backend web-backend
+
+frontend www-http
+        bind *:80
+        mode http
+        http-request redirect scheme https code 301 if !{ ssl_fc }
 
 backend web-backend
         balance roundrobin
         server 112100-web-01 54.174.218.185:80 check
         server 112100-web-02 54.210.173.234:80 check
-
-frontend www-http
-        bind *:80
-        mode http
-        redirect scheme https code 301 if !{ ssl_fc }
