@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# This is a script to install ufw
+
+sudo apt update -y
+sudo apt install ufw -y
+sudo ufw enable
