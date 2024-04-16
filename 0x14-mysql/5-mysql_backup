@@ -10,7 +10,7 @@ fi
 dump_file="backup.sql"
 
 # Generate a MySQL dump of all the databases
-mysqldump -u root -p "$1" --all-databases > "$dump_file"
+mysqldump -uroot -p"$1" --all-databases > "$dump_file"
 
 # Compressed archive name format
 archieve_format="$(date +'%d-%m-%Y').tar.gz"
