@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+A Python script that uses a REST API to export employee TODO list data to a CSV file
+"""
+
 import json
 import requests
 import sys
