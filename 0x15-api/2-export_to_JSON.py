@@ -5,38 +5,26 @@ Requirements:
   Records all tasks that are owned by this employee
 """
 
-import json
-import requests
-import sys
-
-
 if __name__ == "__main__":
-    # Get the employee id"""
-    user_id = sys.argv[1]
+    import json
+    import requests
+    import sys
 
-    # Base URL for the JSONPlaceholder API
-    url = "https://jsonplaceholder.typicode.com/"
+    DONE_TASKS = 0
+    ALL_TASKS = 0
+    csvList = []
 
-    # Fetch user information using the provided employee ID
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
+    URL_FOR_USERS = 'https://jsonplaceholder.typicode.com/users/{0}'.\
+        format(sys.argv[1])
+    URL_FOR_TODOS = 'https://jsonplaceholder.typicode.com/todos'
+    r_for_users = requests.get(URL_FOR_USERS)
+    r_for_todos = requests.get(URL_FOR_TODOS)
 
-    # Fetch the to-do list for the employee using the provided employee ID
-    params = {"userId": user_id}
-    todos = requests.get(url + "todos", params).json()
-
-    # Create a dictionary containing the user and to-do list information
-    data_to_export = {
-        user_id: [
-            {
-                "task": t.get("title"),
-                "completed": t.get("completed"),
-                "username": username
-            }
-            for t in todos
-        ]
-    }
-
-    # Write the data to a JSON file with the employee ID as the filename
-    with open("{}.json".format(user_id), "w") as jsonfile:
-        json.dump(data_to_export, jsonfile, indent=4)
+    name = r_for_users.json().get('name')
+    user_name = r_for_users.json().get('username')
+    todos = r_for_todos.json()
+    with open(sys.argv[1] + '.json', 'w+') as f:
+        json.dump({sys.argv[1]: [{
+            "task": todo.get("title"),
+            "completed": todo.get("completed"),
+            "username": user_name} for todo in todos]}, f)
