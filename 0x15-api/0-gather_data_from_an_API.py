@@ -11,7 +11,8 @@ if __name__ == "__main__":
     user = '{}users/{}'.format(url, sys.argv[1])
     res = requests.get(user)
     user_data = res.json()
-    print("Employee {} is done with tasks".format(user_data.get('name')), end="")
+    print("Employee {} is done with tasks"
+          .format(user_data.get('name')), end="")
 
     todos = '{}todos?userId={}'.format(url, sys.argv[1])
     res = requests.get(todos)
