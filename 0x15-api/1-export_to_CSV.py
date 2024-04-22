@@ -11,6 +11,31 @@ if __name__ == "__main__":
     user = '{}users/{}'.format(url, sys.argv[1])
     res = requests.get(user)
     user_data = res.json()
+    name = user_data.get('username')
+
+    todos = '{}todos?userId={}'.format(url, userid)
+    res = requests.get(todos)
+    tasks = res.json()
+    l_task = []
+    for task in tasks:
+        l_task.append([userid,
+                       name,
+                       task.get('completed'),
+                       task.get('title')])
+
+    filename = '{}.csv'.format(userid)
+    with open(filename, mode='w') as employee_file:
+        employee_writer = csv.writer(employee_file,
+                                     delimiter=',',
+                                     quotechar='"',
+                                     quoting=csv.QUOTE_ALL)
+        for task in l_task:
+            employee_writer.writerow(task)
+
+
+
+    
+    user_data = res.json()
     print("Employee {} is done with tasks"
           .format(user_data.get('name')), end="")
 
