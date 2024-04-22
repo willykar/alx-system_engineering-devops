@@ -8,7 +8,8 @@ import sys
 if __name__ == "__main__":
     url = 'https://jsonplaceholder.typicode.com/'
 
-    user = '{}users/{}'.format(url, sys.argv[1])
+    userid = sys.argv[1]
+    user = '{}users/{}'.format(url, userid)
     res = requests.get(user)
     user_data = res.json()
     name = user_data.get('username')
