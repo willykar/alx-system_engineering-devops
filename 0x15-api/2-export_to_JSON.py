@@ -5,26 +5,31 @@ Requirements:
   Records all tasks that are owned by this employee
 """
 
+import json
+import requests
+import sys
+
+
 if __name__ == "__main__":
-    import json
-    import requests
-    import sys
+    url = 'https://jsonplaceholder.typicode.com/'
 
-    DONE_TASKS = 0
-    ALL_TASKS = 0
-    csvList = []
+    userid = sys.argv[1]
+    user = '{}users/{}'.format(url, userid)
+    res = requests.get(user)
+    json_o = res.json()
+    name = json_o.get('username')
 
-    URL_FOR_USERS = 'https://jsonplaceholder.typicode.com/users/{0}'.\
-        format(sys.argv[1])
-    URL_FOR_TODOS = 'https://jsonplaceholder.typicode.com/todos'
-    r_for_users = requests.get(URL_FOR_USERS)
-    r_for_todos = requests.get(URL_FOR_TODOS)
+    todos = '{}todos?userId={}'.format(url, userid)
+    res = requests.get(todos)
+    tasks = res.json()
+    l_task = []
+    for task in tasks:
+        dict_task = {"task": task.get('title'),
+                     "completed": task.get('completed'),
+                     "username": name}
+        l_task.append(dict_task)
 
-    name = r_for_users.json().get('name')
-    user_name = r_for_users.json().get('username')
-    todos = r_for_todos.json()
-    with open(sys.argv[1] + '.json', 'w+') as f:
-        json.dump({sys.argv[1]: [{
-            "task": todo.get("title"),
-            "completed": todo.get("completed"),
-            "username": user_name} for todo in todos]}, f)
+    d_task = {str(userid): l_task}
+    filename = '{}.json'.format(userid)
+    with open(filename, mode='w') as f:
+        json.dump(d_task, f)
