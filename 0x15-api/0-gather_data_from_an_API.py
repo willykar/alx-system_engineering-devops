@@ -1,56 +1,37 @@
 #!/usr/bin/python3
 """a python script that uses REST API to provide  a given employee
-by their id"""
+by their id
+"""
 
 import requests
-
-def get_todo_progress(employee_id):
-  """
-  Fetches TODO list progress for a given employee ID from a REST API.
-
-  Args:
-      employee_id: Integer representing the employee ID.
-
-  Returns:
-      A dictionary containing employee name, total tasks, and completed tasks, 
-      or None if the request fails.
-  """
-  url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-  response = requests.get(url)
-
-  if response.status_code == 200:
-    user_data = response.json()
-    employee_name = user_data["name"]
-
-    url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-    response = requests.get(url)
-
-    if response.status_code == 200:
-      todos = response.json()
-      total_tasks = len(todos)
-      completed_tasks = sum(todo["completed"] for todo in todos)
-      return {
-          "name": employee_name,
-          "total_tasks": total_tasks,
-          "completed_tasks": completed_tasks
-      }
-  
-  return None
+import sys
 
 if __name__ == "__main__":
-  try:
-    employee_id = int(input("Enter employee ID: "))
-    progress = get_todo_progress(employee_id)
+    # checks if the module is imported as a module or run as a script
+    if len(sys.argv) != 2:
+        sys.exit(1)
 
-    if progress:
-      completed_tasks = progress["completed_tasks"]
-      total_tasks = progress["total_tasks"]
-      employee_name = progress["name"]
-      print(f"Employee {employee_name} is done with tasks({completed_tasks}/{total_tasks}):")
-      for todo in progress:
-        if todo["completed"]:
-          print(f"\t{todo['title']}")
+    employee_ID = sys.argv[1]
+    jsonplaceholder = 'https://jsonplaceholder.typicode.com/users'
+    url = f'{jsonplaceholder}/{employee_ID}'
+
+    # Make a GET request to the RESTAPI
+    response = requests.get(url)
+
+    # Check if the request was successful and provides status code 200
+    if response.status_code == 200:
+        employee_name = response.json().get('name')
+        Todourl = f'{url}/todos'
+        res = requests.get(Todourl)
+        tasks = res.json()
+
+        # A list comprehension that filters completed tasks
+        done_tasks = [task for task in tasks if task.get('completed')]
+
+        # Display the employee TODO list
+        print("Employee {} is done with tasks({}/{}):".format(employee_name, len(done_tasks), len(tasks)))
+        for task in done_tasks:
+            print("\t{}".format(task.get('title')))
     else:
-      print(f"Failed to retrieve data for employee ID: {employee_id}")
-  except ValueError:
-    print("Invalid input: Please enter an integer employee ID.")
+        # Display an error message if the request was not successful
+        print(f"Error: Unable to fetch data. Status code: {response.status_code}")
