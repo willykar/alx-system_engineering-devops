@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""a python script that uses REST API to provide  a given employee
+by their id"""
+
 import requests
 
 def get_todo_progress(employee_id):
