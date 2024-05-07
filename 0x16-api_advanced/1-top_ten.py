@@ -8,7 +8,10 @@ import requests
 def top_ten(subreddit):
     """
     A method that queries the Reddit API
-    If not a valid subreddit, print None.
+    and returns a list containing the titles of all hot articles
+    for a given subreddit. If no results are found for the
+    given subreddit
+    Return None If not a valid subreddit
     """
     res = requests.get(
         "https://www.reddit.com/r/{}/hot.json".format(subreddit),
