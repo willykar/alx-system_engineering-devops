@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-A module that has a recursive function that queries the Reddit API 
+A module that has a recursive function that queries the Reddit API
 """
 import requests
 
